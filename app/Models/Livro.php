@@ -32,4 +32,17 @@ class Livro extends Model
             'id_editora'
         )->withTimestamps();
     }
+
+    protected $fillable = [
+        'titulo',
+        'idioma',
+        'total_paginas',
+        'data_edicao',
+        'isbn',
+        'observacoes',
+        'imagem_capa',
+        'id_genero',
+        'id_autor',
+        'sinopse'
+    ];
 }
