@@ -18,4 +18,10 @@ class Editora extends Model
             'id_livro'
         )->withTimestamps();
     }  
+
+    protected $fillable = [
+        'nome',
+        'morada',
+        'observacoes'
+    ];
 }

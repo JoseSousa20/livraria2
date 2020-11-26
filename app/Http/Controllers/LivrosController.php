@@ -45,5 +45,9 @@ class LivrosController extends Controller
             'sinopse'=>['nullable','min:3', 'max:255'],
         ]);
         $livro = Livro::create($novoLivro);
+
+        return redirect()->route('livros.show',[
+            'id' => $livro->id_livro
+        ]);
     }
 }

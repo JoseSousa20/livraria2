@@ -21,4 +21,12 @@ class Autor extends Model
             'id_livro'
         )->withTimestamps();
     } 
+
+    protected $fillable = [
+        'id_autor',
+        'nome',
+        'nacionalidade',
+        'data_nascimento',
+        'fotografia'
+    ];
 }

@@ -7,7 +7,7 @@ Livraria
 {{$generos->render()}}
 @foreach($generos as $genero)
 <li>
-<a href="{{route('generos.show', ['idg'=>$genero->id_genero])}}">
+<a href="{{route('generos.show', ['id'=>$genero->id_genero])}}">
     {{$genero->designacao}}
 </a></li>
 @endforeach
