@@ -11,5 +11,7 @@ Livraria
     {{$autor->nome}}
 </a></li>
 @endforeach
+<br>
+<a href="{{route('autores.create')}}" class="btn btn-primary">Adicionar Autor</a>
 </ul>
 @endsection

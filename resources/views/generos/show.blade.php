@@ -14,5 +14,6 @@ Observações:{{$genero->observacoes}}<br>
     @endif
 Created_at:{{$genero->created_at}}<br>
 Updated_at:{{$genero->updated_at}}<br>
-Deleted_at:{{$genero->deleted_at}}
+Deleted_at:{{$genero->deleted_at}}<br>
+<a href="{{route('generos.edit', ['id'=>$genero->id_genero])}}" class="btn btn-primary">Editar Genero</a>
 </ul>

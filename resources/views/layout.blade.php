@@ -19,10 +19,6 @@
       <a class="nav-item nav-link" href="{{route('generos.index')}}">Generos</a>
       <a class="nav-item nav-link" href="{{route('editoras.index')}}">Editoras</a>
       <a class="nav-item nav-link" href="{{route('autores.index')}}">Autores</a>
-      <a class="nav-item nav-link" href="{{route('livros.create')}}">Criar Livros</a>
-      <a class="nav-item nav-link" href="{{route('generos.create')}}">Criar Generos</a>
-      <a class="nav-item nav-link" href="{{route('editoras.create')}}">Criar Editoras</a>
-      <a class="nav-item nav-link" href="{{route('autores.create')}}">Criar Autores</a>
     </div>
   </div>
 </nav>
