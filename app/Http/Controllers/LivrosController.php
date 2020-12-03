@@ -82,4 +82,30 @@ class LivrosController extends Controller
             'id' => $livro->id_livro
         ]);
     }
+
+
+    public function delete(Request $req){
+        $idLivro = $req ->id;
+        $livro = Livro::where('id_livro', $idLivro)->first();
+        if(is_null($livro)){
+            return redirect()->route('livros.index')
+            ->with('msg','O livro não existe');
+        }
+        else
+        {
+            return view('livros.delete',[
+                'livro'=>$livro
+            ]);
+        }
+    }
+
+    public function destroy(Request $req){
+        $idLivro = $req ->id;
+        $livro = Livro::findOrfail($idLivro);
+        
+        $livro->delete();
+
+        return redirect()->route('livros.index')->with('msg','Livro eliminado!');
+
+    }
 }
