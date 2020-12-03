@@ -5,12 +5,15 @@
     <title>@yield('titulo-pagina')</title>
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/vegas.min.css')}}">
 
     <script src="{{asset('js/jquery-3.5.1.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/all.min.js')}}"></script>
+    <script src="{{asset('js/vegas.min.js')}}"></script>
+
 </head>
-<body>
+<body style="background-color:#dedede">
     <h1 style="color: #00ff00;">@yield('header')</h1>
     @yield('conteudo')
     @if(session()->has('msg'))
@@ -18,7 +21,7 @@
           {{session('msg')}}
         </div>
     @endif
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" >
     <div class="navbar-nav">
       <a class="nav-item nav-link" href="{{route('livros.index')}}">Livros</a>
       <a class="nav-item nav-link" href="{{route('generos.index')}}">Generos</a>

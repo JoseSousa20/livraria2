@@ -38,7 +38,17 @@ Imagem capa: <input type="text" name="imagem_capa" value="{{$livro->imagem_capa}
 <b style="color:red">Imagem inválida</b><br>
 @endif
 
-Género: <input type="text" name="id_genero" value="{{$livro->id_genero}}"><br><br>
+Genero:
+<select name="id_genero">
+@foreach ($generos as $genero)
+    <option value="{{$genero->id_genero}}"
+        @if ($genero->id_genero==$livro->id_genero)selected 
+        @endif
+    >{{$genero->designacao}}</option>
+@endforeach
+</select>
+<br>
+<br>
 @if($errors->has('id_genero'))
 <b style="color:red">Id Género tem de ser um número</b><br>
 @endif
