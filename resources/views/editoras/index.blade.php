@@ -12,6 +12,8 @@ Livraria
 </a></li>
 @endforeach
 <br>
+@if(auth()->check())
 <a href="{{route('editoras.create')}}" class="btn btn-primary">Adicionar Editora</a>
+@endif
 </ul>
 @endsection

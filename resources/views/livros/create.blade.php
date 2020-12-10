@@ -66,7 +66,7 @@ Editora(s):
 <br>
 <select name="id_editora[]" multiple="multiple">
     @foreach ($editoras as $editora)
-        <option value="{{$editora->id_autor}}">{{$editora->nome}}</option>
+        <option value="{{$editora->id_editora}}">{{$editora->nome}}</option>
     @endforeach
 </select>
 <br>
