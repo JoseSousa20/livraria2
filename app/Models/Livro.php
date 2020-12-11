@@ -46,4 +46,11 @@ class Livro extends Model
         'sinopse',
         'id_user'
     ];
+
+    public function user(){
+        return $this->belongsTo(
+            'App\Models\User', 
+            'id_user'
+        ); 
+    }
 }

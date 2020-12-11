@@ -23,7 +23,7 @@ class LivrosController extends Controller
         $idLivro = $request->id;
         //$livro=Livro::findOrFail($idLivro);
         //$livro=Livro::find($idLivro);
-        $livro=Livro::where('id_livro',$idLivro)->with(['genero','autores','editoras'])->first();
+        $livro=Livro::where('id_livro',$idLivro)->with(['genero','autores','editoras','user'])->first();
         return view('livros.show',[
             'livro'=>$livro
         ]);
@@ -55,7 +55,7 @@ class LivrosController extends Controller
         ]);
         if (Auth::check()){
             $userAtual = Auth::user()->id;
-            $novolivro['id_user']=$userAtual;
+            $novoLivro['id_user']=$userAtual;
         }
         $autores = $req->id_autor;
         $editoras = $req->id_editora;
@@ -73,7 +73,7 @@ class LivrosController extends Controller
         $autores = Autor::all();
         $editoras = Editora::all();
         $editLivro = $req->id;
-        $livro=Livro::where('id_livro',$editLivro)->with('autores','editoras')->first();
+        $livro=Livro::where('id_livro',$editLivro)->with(['autores','editoras','user'])->first();
         $autoresLivro = [];
         foreach($livro->autores as $autor){
             $autoresLivro[] = $autor->id_autor;
@@ -82,15 +82,33 @@ class LivrosController extends Controller
         foreach($livro->editoras as $editora){
             $editorasLivro[] = $editora->id_editora;
         }
-
-        return view('livros.edit',[
-            'livro'=>$livro,
-            'generos'=>$generos,
-            'autores'=>$autores,
-            'editoras'=>$editoras,
-            'autoresLivro'=>$autoresLivro,
-            'editorasLivro'=>$editorasLivro
-        ]);
+        if(isset($livro->user->id_user)){
+            if(Auth()->check()){
+                if(Auth::user()->id == $livro->id_user){
+                    return view('livros.edit',[
+                        'livro'=>$livro,
+                        'generos'=>$generos,
+                        'autores'=>$autores,
+                        'editoras'=>$editoras,
+                        'autoresLivro'=>$autoresLivro,
+                        'editorasLivro'=>$editorasLivro
+                    ]);
+                }
+                else{
+                    return view('index');
+                }
+            }
+        }
+        else{
+            return view('livros.edit',[
+                'livro'=>$livro,
+                'generos'=>$generos,
+                'autores'=>$autores,
+                'editoras'=>$editoras,
+                'autoresLivro'=>$autoresLivro,
+                'editorasLivro'=>$editorasLivro
+            ]);
+        }
     }
 
     public function update(Request $req){
@@ -124,15 +142,35 @@ class LivrosController extends Controller
     public function delete(Request $req){
         $idLivro = $req ->id;
         $livro = Livro::where('id_livro', $idLivro)->first();
-        if(is_null($livro)){
-            return redirect()->route('livros.index')
-            ->with('msg','O livro não existe');
+        if(isset($livro->user->id_user)){
+            if(Auth()->check()){
+                if(Auth::user()->id == $livro->id_user){
+                    if(is_null($livro)){
+                        return redirect()->route('livros.index')
+                            ->with('msg','O livro não existe');
+                    }
+                    else
+                        {
+                        return view('livros.delete',[
+                        'livro'=>$livro
+                        ]);
+                    }
+                }
+                else{
+                    return view('livros.index');
+                }
+            }
         }
-        else
-        {
-            return view('livros.delete',[
-                'livro'=>$livro
-            ]);
+        else{
+            if(is_null($livro)){
+                return redirect()->route('livros.index')
+                    ->with('msg','O livro não existe');
+            }
+            else{
+                return view('livros.delete',[
+                    'livro'=>$livro
+                ]);
+            }
         }
     }
 
@@ -144,7 +182,7 @@ class LivrosController extends Controller
         $livro->autores()->detach($autoresLivro);
         
         $editorasLivro = Livro::findOrfail($idLivro)->editoras;
-        $livro->editoras()->detach($editorasLivroLivro);
+        $livro->editoras()->detach($editorasLivro);
 
         $livro->delete();
 
