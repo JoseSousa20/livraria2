@@ -42,6 +42,9 @@ Route::get('/livros/{id}/delete', 'App\Http\Controllers\LivrosController@delete'
 Route::delete('/livros', 'App\Http\Controllers\LivrosController@destroy')
     ->name('livros.destroy')->middleware('auth');
 
+Route::post('/livros/{id}/comentarios', 'App\Htpp\Controllers\LivrosController@comentario')
+    ->name('livros.comentario')->middleware('auth');
+
 
 
 //ROUTES AUTORES
@@ -151,3 +154,7 @@ Route::post('/form','App\Http\Controllers\PesquisaController@formenviado')
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+

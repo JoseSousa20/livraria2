@@ -48,16 +48,28 @@ Created_at: {{$livro->created_at}}<br>
 Updated_at: {{$livro->updated_at}}<br>
 Deleted_at: {{$livro->deleted_at}}<br>
 <br>
-
+<br>
 @if($livro->id_user != NULL)
     @if(auth()->check())
         @if(auth()->user()->id == $livro->id_user)
             <a href="{{route('livros.edit', ['id'=>$livro->id_livro])}}" class="btn btn-primary">Editar Livro</a>
             <a href="{{route('livros.delete', ['id'=>$livro->id_livro])}}" class="btn btn-primary">Eliminar Livro</a>
+            
         @endif
     @endif
 @else
     <a href="{{route('livros.edit', ['id'=>$livro->id_livro])}}" class="btn btn-primary">Editar Livro</a>
     <a href="{{route('livros.delete', ['id'=>$livro->id_livro])}}" class="btn btn-primary">Eliminar Livro</a>
+@endif
+<br>
+<br>
+@if(auth()->check())
+<form action="{{route('livros.comentario', ['id'=>$livro->id_livro])}}">
+    Comentário: <br><textarea type="text" name="comentario">{{old('comentario')}}</textarea><br><br>
+    @if($errors->has('comentario'))
+        <b style="color:red">Deverá ter entre 3 e 255 carateres</b>
+    @endif
+    <input type="submit" value="enviar">
+</form>
 @endif
 </ul>

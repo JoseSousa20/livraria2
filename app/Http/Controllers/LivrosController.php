@@ -23,7 +23,7 @@ class LivrosController extends Controller
         $idLivro = $request->id;
         //$livro=Livro::findOrFail($idLivro);
         //$livro=Livro::find($idLivro);
-        $livro=Livro::where('id_livro',$idLivro)->with(['genero','autores','editoras','user'])->first();
+        $livro=Livro::where('id_livro',$idLivro)->with(['genero','autores','editoras','user','comentario'])->first();
         return view('livros.show',[
             'livro'=>$livro
         ]);
@@ -188,5 +188,26 @@ class LivrosController extends Controller
 
         return redirect()->route('livros.index')->with('msg','Livro eliminado!');
 
+    }
+
+
+
+
+
+    public function comentario(Request $req){
+        $idLivro = $req ->id;
+
+        $livro = Livro::findOrfail($idLivro);
+        $comentario = $req -> validate([
+            'comentario'=>['required','','min:1', 'max:255'],
+        ]);
+        if (Auth::check()){
+            $userAtual = Auth::user()->id;
+            $comentario['id_user']=$userAtual;
+            
+            return redirect()->route('livros.show',[
+                'id' => $livro->id_livro
+            ]);
+        }
     }
 }

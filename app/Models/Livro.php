@@ -53,4 +53,12 @@ class Livro extends Model
             'id_user'
         ); 
     }
+
+
+    public function comentario(){
+        return $this->hasMany(
+            'App\Models\Comentario',
+            'id_livro'
+        );
+    }
 }
