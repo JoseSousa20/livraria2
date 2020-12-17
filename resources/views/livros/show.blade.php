@@ -69,7 +69,7 @@ Deleted_at: {{$livro->deleted_at}}<br>
     @if($errors->has('comentario'))
         <b style="color:red">Deverá ter entre 3 e 255 carateres</b>
     @endif
-    <input type="submit" value="enviar">
+    <input type="submit" value="Enviar">
 </form>
 @endif
 </ul>

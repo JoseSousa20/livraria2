@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 10-Dez-2020 às 16:08
+-- Generation Time: 17-Dez-2020 às 15:23
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -71,6 +71,22 @@ CREATE TABLE `autores_livros` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `comentarios`
+--
+
+CREATE TABLE `comentarios` (
+  `id_comentario` int(11) NOT NULL,
+  `id_livro` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `comentario` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -216,6 +232,7 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo_user` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'normal' COMMENT 'admin ou normal',
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -225,8 +242,8 @@ CREATE TABLE `users` (
 -- Extraindo dados da tabela `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'José Sousa', 'sousa54@gmail.com', NULL, '$2y$10$PEFSkC64frKxjYuBoCiqPuBeHWjl/w/qetIdb4Qmxg4zof7/ri4Te', NULL, '2020-12-10 13:56:02', '2020-12-10 13:56:02');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `tipo_user`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'José Sousa', 'sousa54@gmail.com', NULL, '$2y$10$PEFSkC64frKxjYuBoCiqPuBeHWjl/w/qetIdb4Qmxg4zof7/ri4Te', 'normal', 'att5LxuUvYDBSbbLED6inzdH5vO36cWIs3BOS7o8ztYkhaap5rdtNUxKjHrL', '2020-12-10 13:56:02', '2020-12-10 13:56:02');
 
 --
 -- Indexes for dumped tables
@@ -243,6 +260,12 @@ ALTER TABLE `autores`
 --
 ALTER TABLE `autores_livros`
   ADD PRIMARY KEY (`id_al`);
+
+--
+-- Indexes for table `comentarios`
+--
+ALTER TABLE `comentarios`
+  ADD PRIMARY KEY (`id_comentario`);
 
 --
 -- Indexes for table `edicoes`
@@ -289,6 +312,12 @@ ALTER TABLE `autores`
 --
 ALTER TABLE `autores_livros`
   MODIFY `id_al` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comentarios`
+--
+ALTER TABLE `comentarios`
+  MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `editoras`

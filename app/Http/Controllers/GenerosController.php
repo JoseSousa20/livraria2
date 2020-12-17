@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Genero;
 
 class GenerosController extends Controller
@@ -31,54 +32,76 @@ class GenerosController extends Controller
     }
 
     public function store(Request $req){
-        $novoGenero = $req -> validate([
-            'designacao'=>['required','min:3', 'max:30'],
-            'observacoes'=>['nullable','min:3', 'max:255'],
-        ]);
-        $genero = Genero::create($novoGenero);
+        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+            $novoGenero = $req -> validate([
+                'designacao'=>['required','min:3', 'max:30'],
+                'observacoes'=>['nullable','min:3', 'max:255'],
+            ]);
+            $genero = Genero::create($novoGenero);
 
-        return redirect()->route('generos.show',[
-            'id' => $genero->id_genero
-        ]);
+            return redirect()->route('generos.show',[
+                'id' => $genero->id_genero
+            ]);
+        }
+        else{
+            return redirect()->route('generos.index')
+            ->with('msg','Não tem permissão para aceder a área pretendida');
+        }
     }
 
 
     public function edit(Request $req){
         $editGenero = $req->id;
         $genero=Genero::where('id_genero',$editGenero)->first();
-
-        return view('generos.edit',[
-            'generos'=>$genero
-        ]);
+        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+            return view('generos.edit',[
+                'generos'=>$genero
+            ]);
+        }
+        else{
+            return redirect()->route('generos.index')
+            ->with('msg','Não tem permissão para aceder a área pretendida');
+        }
     }
 
     public function update(Request $req){
         $idGenero = $req->id;
         $genero=Genero::where('id_genero',$idGenero)->first();
+        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+            $updateGenero = $req -> validate([
+                'designacao'=>['required','min:3', 'max:30'],
+                'observacoes'=>['nullable','min:3', 'max:255'],
+            ]);
+            $genero->update($updateGenero);
 
-        $updateGenero = $req -> validate([
-            'designacao'=>['required','min:3', 'max:30'],
-            'observacoes'=>['nullable','min:3', 'max:255'],
-        ]);
-        $genero->update($updateGenero);
-
-        return redirect()->route('generos.show',[
-            'id' => $genero->id_genero
-        ]);
+            return redirect()->route('generos.show',[
+                'id' => $genero->id_genero
+            ]);
+        }
+        else{
+            return redirect()->route('generos.index')
+            ->with('msg','Não tem permissão para aceder a área pretendida');
+        }
     }
 
     public function delete(Request $req){
         $idGenero = $req ->id;
         $genero = Genero::where('id_genero', $idGenero)->first();
-        if(is_null($genero)){
-            return redirect()->route('generos.index')
-            ->with('msg','O genero não existe');
+        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+            if(is_null($genero)){
+                return redirect()->route('generos.index')
+                ->with('msg','O genero não existe');
+            }
+            else
+            {
+                return view('generos.delete',[
+                    'generos'=>$genero
+                ]);
+            }
         }
-        else
-        {
-            return view('generos.delete',[
-                'generos'=>$genero
-            ]);
+        else{
+            return redirect()->route('generos.index')
+            ->with('msg','Não tem permissão para aceder a área pretendida');
         }
     }
 
