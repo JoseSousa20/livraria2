@@ -23,6 +23,7 @@
     @endif
     <nav class="navbar navbar-expand-lg navbar-light bg-light" >
     <div class="navbar-nav">
+      <a class="nav-item nav-link" href="{{route('pesquisa.index')}}">Pesquisa</a>
       <a class="nav-item nav-link" href="{{route('livros.index')}}">Livros</a>
       <a class="nav-item nav-link" href="{{route('generos.index')}}">Generos</a>
       <a class="nav-item nav-link" href="{{route('editoras.index')}}">Editoras</a>

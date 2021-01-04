@@ -42,7 +42,6 @@ class LivrosController extends Controller
     }
 
     public function store(Request $req){
-        if(Gate::allows('admin')){
             $novoLivro = $req -> validate([
                 'titulo'=>['required','min:3', 'max:100'],
                 'idioma'=>['required','min:3', 'max:10'],
@@ -67,11 +66,6 @@ class LivrosController extends Controller
             return redirect()->route('livros.show',[
                 'id' => $livro->id_livro
             ]);
-        }
-        // else{
-        //     return view ('index')
-        //     ->with('msg','Não tem permissão para aceder a área pretendida');
-        // }
     }
 
     public function edit(Request $req){

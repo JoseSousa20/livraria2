@@ -28,11 +28,17 @@ class GenerosController extends Controller
 
     
     public function create(){
-        return view('generos.create');
+        if(Gate::allows('admin')){
+            return view('generos.create');
+        }
+        else{
+            return redirect()->route('generos.index')
+            ->with('msg','Não tem permissão para aceder a área pretendida');
+        }
     }
 
     public function store(Request $req){
-        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+        if(Gate::allows('admin')){
             $novoGenero = $req -> validate([
                 'designacao'=>['required','min:3', 'max:30'],
                 'observacoes'=>['nullable','min:3', 'max:255'],
@@ -53,7 +59,7 @@ class GenerosController extends Controller
     public function edit(Request $req){
         $editGenero = $req->id;
         $genero=Genero::where('id_genero',$editGenero)->first();
-        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+        if(Gate::allows('admin')){
             return view('generos.edit',[
                 'generos'=>$genero
             ]);
@@ -67,7 +73,7 @@ class GenerosController extends Controller
     public function update(Request $req){
         $idGenero = $req->id;
         $genero=Genero::where('id_genero',$idGenero)->first();
-        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+        if(Gate::allows('admin')){
             $updateGenero = $req -> validate([
                 'designacao'=>['required','min:3', 'max:30'],
                 'observacoes'=>['nullable','min:3', 'max:255'],
@@ -87,7 +93,7 @@ class GenerosController extends Controller
     public function delete(Request $req){
         $idGenero = $req ->id;
         $genero = Genero::where('id_genero', $idGenero)->first();
-        if(Gate::allows('atualizar-genero',$genero)|| Gate::allows('admin')){
+        if(Gate::allows('admin')){
             if(is_null($genero)){
                 return redirect()->route('generos.index')
                 ->with('msg','O genero não existe');
