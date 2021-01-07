@@ -1,5 +1,5 @@
 @extends('layout')
-<form action="{{route('livros.store')}}" method="post">
+<form action="{{route('livros.store')}}" enctype="multipart/form-data" method="post">
 @csrf
 Título: (<b sytle="color:red">*</b>) <input type="text" name="titulo" value="{{old('titulo')}}"><br><br>
 @if($errors->has('titulo'))
@@ -31,7 +31,7 @@ Observações: <textarea name="observacoes">{{old('observacoes')}}</textarea><br
 <b style="color:red">Deverá ter entre 3 e 255 carateres</b><br>
 @endif
 
-Imagem capa: <input type="text" name="imagem_capa" value="{{old('imagem_capa')}}"><br><br>
+Imagem capa: <input type="file" name="imagem_capa" value="{{old('imagem_capa')}}"><br><br>
 @if($errors->has('imagem_capa'))
 <b style="color:red">Imagem inválida</b><br>
 @endif

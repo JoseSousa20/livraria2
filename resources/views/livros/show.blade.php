@@ -7,7 +7,12 @@ ISBN: {{$livro->isbn}}<br>
 Data Edição: {{$livro->data_edicao}}<br>
 Total paginas: {{$livro->total_paginas}}<br>
 Observações: {{$livro->observacoes}}<br>
-Imagem Capa: {{$livro->imagem_capa}}<br>
+@if($livro->imagem_capa != NULL)
+    Imagem Capa: <br>
+    <img src="{{asset('imagens/livros/' .$livro->imagem_capa)}}" width="150px"><br>
+@else
+    Imagem Capa: Inexistente<br>
+@endif
 
 @if(count($livro->editoras)>0)
         @foreach($livro->editoras as $editora)
