@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Auth;
 use App\Models\Livro;
 use App\Models\Genero;
@@ -50,6 +51,7 @@ class LivrosController extends Controller
                 'isbn'=>['required','min:13','max:13'],
                 'observacoes'=>['nullable','min:3', 'max:255'],
                 'imagem_capa'=>['image','nullable','max:2000'],
+                'excerto'=>['file','mimes:pdf, docx', 'max:2000'],
                 'id_genero'=>['numeric', 'nullable'],
                 'sinopse'=>['nullable','min:3', 'max:255'],
             ]);
@@ -60,6 +62,14 @@ class LivrosController extends Controller
                 $guardarImagem = $req->file('imagem_capa')->storeAs('imagens/livros',$nomeImagem);
 
                 $novoLivro['imagem_capa']=$nomeImagem;
+            }
+            if($req->hasFile('excerto')){
+                $nomeExcerto = $req->file('excerto')->getClientOriginalName();
+
+                $nomeExcerto = time().'_'.$nomeExcerto;
+                $guardarExcerto = $req->file('excerto')->storeAs('documentos/livros',$nomeExcerto);
+
+                $novoLivro['excerto']=$nomeExcerto;
             }
             if (Auth::check()){
                 $userAtual = Auth::user()->id;
@@ -133,6 +143,8 @@ class LivrosController extends Controller
         
         $idLivro = $req->id;
         $livro=Livro::where('id_livro',$idLivro)->first();
+        $imagemAntiga = $livro->imagem_capa;
+        $excertoAntigo = $livro->excerto;
             if(Gate::allows('atualizar-livro',$livro)|| Gate::allows('admin')){
                 $updateLivro = $req -> validate([
                     'titulo'=>['required','min:3', 'max:100'],
@@ -142,6 +154,7 @@ class LivrosController extends Controller
                     'isbn'=>['required','min:13','max:13'],
                     'observacoes'=>['nullable','min:3', 'max:255'],
                     'imagem_capa'=>['image','nullable','max:2000'],
+                    'excerto'=>['file','mimes:pdf, docx', 'max:2000'],
                     'id_genero'=>['numeric', 'nullable'],
                     'sinopse'=>['nullable','min:3', 'max:255'],
                 ]);
@@ -150,9 +163,27 @@ class LivrosController extends Controller
     
                     $nomeImagem = time().'_'.$nomeImagem;
                     $guardarImagem = $req->file('imagem_capa')->storeAs('imagens/livros',$nomeImagem);
+
+                    if(!is_null($imagemAntiga)){
+                        Storage::Delete('imagens/livros/'.$imagemAntiga);
+                    }
     
                     $updateLivro['imagem_capa']=$nomeImagem;
                 }
+
+                if($req->hasFile('excerto')){
+                    $nomeExcerto = $req->file('excerto')->getClientOriginalName();
+    
+                    $nomeExcerto = time().'_'.$nomeExcerto;
+                    $guardarExcerto = $req->file('excerto')->storeAs('documentos/livros',$nomeExcerto);
+
+                    if(!is_null($excertoAntigo)){
+                        Storage::Delete('documentos/livros/'.$excertoAntigo);
+                    }
+    
+                    $updateLivro['excerto']=$nomeExcerto;
+                }
+
                 $autores = $req->id_autor;
                 $editoras = $req->id_editora;
 

@@ -44,7 +44,8 @@ class Livro extends Model
         'id_genero',
         'id_autor',
         'sinopse',
-        'id_user'
+        'id_user',
+        'excerto'
     ];
 
     public function user(){

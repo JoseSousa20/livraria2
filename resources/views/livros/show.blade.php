@@ -9,7 +9,7 @@ Total paginas: {{$livro->total_paginas}}<br>
 Observações: {{$livro->observacoes}}<br>
 @if($livro->imagem_capa != NULL)
     Imagem Capa: <br>
-    <img src="{{asset('imagens/livros/' .$livro->imagem_capa)}}" width="150px"><br>
+    <img src="{{asset('imagens/livros/' .$livro->imagem_capa)}}" width="200px"><br>
 @else
     Imagem Capa: Inexistente<br>
 @endif
@@ -52,6 +52,11 @@ Sinopse: {{$livro->sinopse}}<br>
 Created_at: {{$livro->created_at}}<br>
 Updated_at: {{$livro->updated_at}}<br>
 Deleted_at: {{$livro->deleted_at}}<br>
+@if($livro->excerto != NULL)
+    <a href="{{asset('documentos/livros/' .$livro->excerto)}}" Target="_blank">Excerto</a><br>
+@else
+    Excerto: Inexistente<br>
+@endif
 <br>
 <br>
 @if($livro->id_user != NULL)

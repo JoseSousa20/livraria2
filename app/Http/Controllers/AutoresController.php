@@ -42,8 +42,16 @@ class AutoresController extends Controller
                 'nome'=>['required','min:3', 'max:100'],
                 'nacionalidade'=>['nullable','min:3', 'max:10'],
                 'data_nascimento'=>['nullable','date'],
-                'fotografia'=>['nullable']
+                'fotografia'=>['image','nullable','max:2000']
             ]);
+            if($req->hasFile('fotografia')){
+                $nomeFotografia = $req->file('fotografia')->getClientOriginalName();
+
+                $nomeFotografia = time().'_'.$nomeFotografia;
+                $guardarFotografia = $req->file('fotografia')->storeAs('imagens/autores',$nomeFotografia);
+
+                $novoAutor['fotografia']=$nomeFotografia;
+            }
             $autor = Autor::create($novoAutor);
 
             return redirect()->route('autores.show',[
@@ -74,13 +82,27 @@ class AutoresController extends Controller
     public function update(Request $req){
         $idAutor = $req ->id;
         $autor = Autor::where('id_Autor', $idAutor)->first();
+        $fotografiaAntiga = $autor->fotografia;
         if(Gate::allows('admin')){
             $updateAutor = $req -> validate([
                 'nome'=>['required','min:3', 'max:100'],
                 'nacionalidade'=>['nullable','min:3', 'max:10'],
                 'data_nascimento'=>['nullable','date'],
-                'fotografia'=>['nullable']
+                'fotografia'=>['image','nullable','max:2000']
             ]);
+            if($req->hasFile('fotografia')){
+                $nomeFotografia = $req->file('fotografia')->getClientOriginalName();
+
+                $nomeFotografia = time().'_'.$nomeFotografia;
+                $guardarFotografia = $req->file('fotografia')->storeAs('imagens/autores',$nomeFotografia);
+
+                if(!is_null($fotografiaAntiga)){
+                    Storage::Delete('imagens/autores/'.$fotografiaAntiga);
+                }
+
+                $updateAutor['fotografia']=$nomeFotografia;
+            }
+
             $autor->update($updateAutor);
 
             return redirect()->route('autores.show',[

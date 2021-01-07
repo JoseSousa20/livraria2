@@ -36,6 +36,11 @@ Imagem capa: <input type="file" name="imagem_capa" value="{{old('imagem_capa')}}
 <b style="color:red">Imagem inválida</b><br>
 @endif
 
+Excerto: <input type="file" name="excerto" value="{{$livro->excerto}}"><br><br>
+@if($errors->has('excerto'))
+<b style="color:red">Excerto inválido</b><br>
+@endif
+
 
 Genero:
 <select name="id_genero">

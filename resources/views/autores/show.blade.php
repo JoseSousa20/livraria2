@@ -12,8 +12,13 @@ Nome:{{$autores->nome}}<br>
         </div>
     @endif
 Nacionalidade:{{$autores->nacionalidade}}<br>
-Data de Nascimento:{{$autores->data_nascimento}}
-Fotografia:{{$autores->fotografia}}<br>
+Data de Nascimento:{{$autores->data_nascimento}}<br>
+@if($autores->fotografia != NULL)
+    Fotografia: <br>
+    <img src="{{asset('imagens/autores/' .$autores->fotografia)}}" width="200px"><br>
+@else
+    Fotografia: Inexistente<br>
+@endif
 Created_at:{{$autores->created_at}}<br>
 Updated_at:{{$autores->updated_at}}<br>
 Deleted_at:{{$autores->deleted_at}}<br>

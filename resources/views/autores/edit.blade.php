@@ -18,7 +18,7 @@ Data Nascimento: <input type="date" name="data_nascimento" value="{{$autor->data
 <b style="color:red">Formato de data incorreto(DD-MM-AAAA)</b><br><br>
 @endif
 
-Fotografia: <input type="text" name="fotografia" value="{{$autor->fotografia}}"><br><br>
+Fotografia: <input type="file" name="fotografia" value="{{$autor->fotografia}}"><br><br>
 @if($errors->has('fotografia'))
 <b style="color:red">Fotografia inválida</b><br>
 @endif
